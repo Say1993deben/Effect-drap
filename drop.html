@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<title>拖拽</title>
+	</head>
+	<style type="text/css">
+		*{margin: 0; padding: 0;}
+	</style>
+	<body>
+		<img id="mypic" src="1.png" alt="" style="position:absolute;top:10px; left:10px;">
+	</body>
+	<script type="text/javascript">
+	function dragPic(e){
+		var e = e||window.event;
+		var myElement = e.srcElement||e.target;//当前操作的对象
+		if(e.preventDefault){
+			e.preventDefault();//取消默认事件
+		}else{
+			e.returnvalue = false;
+		}
+		var mypic = document.getElementById("mypic");
+		mypic['draging'] = true;
+		var relLeft = e.clientX - parseInt(myElement.style.left);
+		var relTop = e.clientY - parseInt(myElement.style.top);
+		myElement.onmouseup = function(){
+			mypic['draging'] = false;
+		}
+		document.onmousemove = function(eMove){
+			var eMove = eMove||window.event;
+			if(mypic['draging'] == true){
+				myElement.style.left = eMove.clientX - relLeft + "px";
+				myElement.style.top = eMove.clientY - relTop + "px";
+				return false;
+			}
+		}
+	}
+	window.onload = function(){
+		var mypic = document.getElementById('mypic');
+		mypic['draging'] = false;//自定义属性：是否拖动图片
+		if(navigator.userAgent.indexOf("MSIE")>0){
+			mypic.attachEvent("onmousedown",dragPic);
+		}else{
+			mypic.addEventListener("mousedown",dragPic,false);
+		}
+	}
+	</script>
+</html>
